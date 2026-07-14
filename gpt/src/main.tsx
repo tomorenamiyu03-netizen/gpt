@@ -125,7 +125,7 @@ function Hero() {
   const step = (n: number) => setActive((active + n + heroImages.length) % heroImages.length);
   return <section className="hero-section" id="top">
     <div className="nav-bar"><Navigation /></div>
-    <div className="hero-title-wrap"><h1 className="hero-heading hero-title">i&apos;m SHUIYU</h1></div>
+    <div className="hero-title-wrap"><h1 className="hero-heading hero-title">SHUI YU</h1></div>
     <div className="hero-figure-layer" aria-label="Hero character gallery">
       {heroImages.map(([src, name], i) => {
         const raw = (i - active + heroImages.length) % heroImages.length;
@@ -189,7 +189,7 @@ function App() {
     <div className="opening-panel" aria-hidden="true"><div className="opening-word"><span>SHUI</span><span>YU</span></div><div className="opening-line" /></div>
     <FloatingNavigation /><Hero /><About />
     <section className="projects-section" id="projects"><h2 className="hero-heading section-heading">Project</h2><div className="project-stack">{projects.map((p,i)=><Project project={p} index={i} key={p.id}/>)}</div></section>
-    <section className="contact-section" id="contact"><h2 className="hero-heading contact-heading">Contact</h2><BorderGlow animated backgroundColor="rgba(16,12,18,.9)" borderRadius={34} className="contact-glow-card" colors={['#ff8ac8','#c084fc','#38bdf8']}><div className="contact-panel"><span className="contact-kicker">GET IN TOUCH</span><div className="contact-info-grid"><a className="contact-info-item" href="tel:15593122721"><span className="contact-info-icon"><Phone /></span><span>鐢佃瘽</span><strong>15593122721</strong></a><a className="contact-info-item" href="mailto:15227846986@qq.com"><span className="contact-info-icon"><Mail /></span><span>鐢靛瓙閭</span><strong>15227846986@QQ.COM</strong></a></div></div></BorderGlow></section>
+    <section className="contact-section" id="contact"><h2 className="hero-heading contact-heading">Contact</h2><BorderGlow animated backgroundColor="rgba(16,12,18,.9)" borderRadius={34} className="contact-glow-card" colors={['#ff8ac8','#c084fc','#38bdf8']}><div className="contact-panel"><span className="contact-kicker">GET IN TOUCH</span><div className="contact-info-grid"><a className="contact-info-item" href="tel:15593122721"><span className="contact-info-icon"><Phone /></span><span>电话</span><strong>15593122721</strong></a><a className="contact-info-item" href="mailto:15227846986@qq.com"><span className="contact-info-icon"><Mail /></span><span>电子邮箱</span><strong>15227846986@QQ.COM</strong></a></div></div></BorderGlow></section>
   </main>;
 }
 

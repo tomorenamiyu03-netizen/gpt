@@ -1,0 +1,9 @@
+node_modules/
+.pnpm-store/
+dist/
+
+gpt/node_modules/
+gpt/.pnpm-store/
+gpt/dist/
+
+*.log

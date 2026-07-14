@@ -17,7 +17,13 @@ const heroImages = [
 ];
 
 const projects = [
-  { name: '文创/IP', category: 'Cultural IP', id: 'project-cultural', images: Array.from({ length: 6 }, (_, i) => `/assets/cultural-0${i + 1}${i === 0 ? '-metal' : ''}-opt.webp`) },
+  { name: '文创/IP', category: 'Cultural IP', id: 'project-cultural', images: [
+    ...Array.from({ length: 6 }, (_, i) => `/assets/cultural-0${i + 1}${i === 0 ? '-metal' : ''}-opt.webp`),
+    '/assets/cultural-datian.jpg',
+    '/assets/cultural-feitian-sister.jpg',
+    '/assets/cultural-boy-1.gif',
+    '/assets/cultural-girl-1.gif',
+  ] },
   { name: '包装', category: 'Package Design', id: 'project-packaging', images: Array.from({ length: 6 }, (_, i) => `/assets/packaging-0${i + 1}-opt.webp`) },
   { name: '插画/海报', category: 'Poster', id: 'project-poster', images: ['/assets/poster-01-opt.webp','/assets/poster-02-opt.webp','/assets/poster-03-opt.webp','/assets/poster-04-opt.webp','/assets/poster-05-opt.webp','/assets/poster-06-opt.webp','/assets/poster-07-opt.webp','/assets/poster-08.mp4'] },
 ];
@@ -122,23 +128,36 @@ function FloatingNavigation() {
 
 function Hero() {
   const [active, setActive] = useState(0);
-  const step = (n: number) => setActive((active + n + heroImages.length) % heroImages.length);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const animationTimer = useRef<number | null>(null);
+  const navigate = (n: number) => {
+    if (isAnimating) return;
+    setIsAnimating(true);
+    setActive((current) => (current + n + heroImages.length) % heroImages.length);
+    if (animationTimer.current) window.clearTimeout(animationTimer.current);
+    animationTimer.current = window.setTimeout(() => setIsAnimating(false), 650);
+  };
+
+  useEffect(() => () => {
+    if (animationTimer.current) window.clearTimeout(animationTimer.current);
+  }, []);
+
   return <section className="hero-section" id="top">
     <div className="nav-bar"><Navigation /></div>
     <div className="hero-title-wrap"><h1 className="hero-heading hero-title">SHUI YU</h1></div>
     <div className="hero-figure-layer" aria-label="Hero character gallery">
       {heroImages.map(([src, name], i) => {
         const raw = (i - active + heroImages.length) % heroImages.length;
-        const role = raw === 0 ? 'center' : raw === 1 ? 'right' : raw === 2 ? 'far-right' : raw === 4 ? 'left' : 'far-left';
-        const compact = (i === 2 || i === 3) && role === 'center' ? 'hero-figure-selected-compact' : '';
-        const enlarged = '';
+        const role = raw === 0 ? 'center' : raw === 1 ? 'right' : raw === 4 ? 'left' : raw === 2 ? 'back' : 'far-left';
+        const compact = i === 3 && role === 'center' ? 'hero-figure-selected-compact' : '';
+        const enlarged = i !== 3 && role === 'center' ? 'hero-figure-selected-large' : '';
         const lift = '';
         const lowered = (i === 2 || i === 3) && role === 'center' ? 'hero-figure-lowered' : '';
         const extraLowered = i === 3 && role === 'center' ? 'hero-figure-extra-lowered' : '';
         return <button className={`hero-figure hero-figure-${role} ${compact} ${enlarged} ${lift} ${lowered} ${extraLowered}`} key={src} onClick={() => setActive(i)} type="button"><img src={src} alt={name} decoding="async" fetchPriority={role === 'center' ? 'high' : 'low'} loading={role === 'center' ? 'eager' : 'lazy'} /></button>;
       })}
     </div>
-    <div className="hero-carousel-controls"><button onClick={() => step(-1)} aria-label="Previous hero image"><ArrowLeft /></button><button onClick={() => step(1)} aria-label="Next hero image"><ArrowRight /></button></div>
+    <div className="hero-carousel-controls"><button onClick={() => navigate(-1)} aria-label="Previous hero image"><ArrowLeft /></button><button onClick={() => navigate(1)} aria-label="Next hero image"><ArrowRight /></button></div>
     <div className="hero-bottom"><a className="contact-button" href="#projects">IP潮玩</a></div>
   </section>;
 }
